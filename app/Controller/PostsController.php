@@ -1,16 +1,39 @@
 <?php
-
+//all controllers extend the appController classes
+//provides phpcake functionality
 class PostsController extends AppController {
     public $helpers = array('Html', 'Form', 'Session');
-  	public $components = array('Session');
-  	
+  	public $components = array('Session', 'Paginator');
+	var $paginate = array(
+	              'limit' => 4,
+	              'order' => array(
+	                'Post.product_id' => 'asc'
+	                )
+	              );               
+    
+    public function beforeFilter() {
+		
+		$this->set('current_user', $this->Auth->user());
+		if( !is_array( $this->Auth->user() ) ) {
+			
+			return $this->redirect(array( 'controller' => 'Users', 'action' => 'login'));			
+			
+		}
+		
+  	}
+	  	
+  	//index function, when the user will go to posts and then go to the index, it will retrieve
+  	//all of the posts from our posts table and display them to the browser
     public function index() {
-    //finding all records in the post table and hading the response index.ctp in view 
-        $this->set('posts', $this->Post->find('all'));
+    //finding all records in the post table and handing
+    // the response index.ctp in view 
+    	$posts = $this->paginate( 'Post' );
+        $this->set('posts', $posts );
     }
     
-    
-     public function view($id = null) {
+    //function view with id value set with null in
+    //case id is not provided
+     public function view($id = NULL) {
         if (!$id) {
             throw new NotFoundException(__('Invalid post'));
         }
@@ -22,14 +45,19 @@ class PostsController extends AppController {
         $this->set('post', $post);
     }
     
+    // app/Controller/PostsController.php
+
     //This function will allow us to add to the posts database //
-    /* public function add() {
+     public function add() {
     //refers to type of http(get &post request) post here refers to http
     //checking if this http "post" request//
     //not allow people get in the database// 
         if ($this->request->is('post')) {
         //prepare my model get ready (initialasing the post model) //
-            $this->Post->create(); 
+           // $this->Post->create(); 
+            
+            	//Added this line
+      		  	$this->request->data['Post']['user_id'] = $this->Auth->user('id');
             
             //data that come through on the form. request object post data//hading the data from form to the model
             //post model job talk to the database. // save information,request obje ct send to model 
@@ -48,19 +76,7 @@ class PostsController extends AppController {
             //flash message saying we weren't able to do it. // 
             $this->Session->setFlash(__('Unable to add your post.'));
         }
-    } */
-    
-       public function add() {
-        if ($this->request->is('post')) {
-            $this->Post->create();
-            if ($this->Post->save($this->request->data)) {
-                $this->Session->setFlash(__('Your post has been saved.'));
-                return $this->redirect(array('action' => 'index'));
-            }
-            $this->Session->setFlash(__('Unable to add your post.'));
-        }
-    }
-    
+    } 
     
     // function will allow us to edit an existing post 
     public function edit($id = null) {
@@ -98,10 +114,25 @@ class PostsController extends AppController {
         );
         return $this->redirect(array('action' => 'index'));
     }
-}
-    
-    
-    
-    
+  }
+  
+  // app/Controller/PostsController.php
+
+	public function isAuthorized($user) {
+    // All registered users can add posts
+    if ($this->action === 'add') {
+        return true;
+    }
+
+    // The owner of a post can edit and delete it
+    if (in_array($this->action, array('edit', 'delete'))) {
+        $postId = $this->request->params['pass'][0];
+        if ($this->Post->isOwnedBy($postId, $user['id'])) {
+            return true;
+        }
+    }
+
+    return parent::isAuthorized($user);
+	}
 }
 ?>

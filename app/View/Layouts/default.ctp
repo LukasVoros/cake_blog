@@ -42,9 +42,25 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
 		</div>
 		<div id="content">
-
-			<?php echo $this->Session->flash(); ?>
-
+			<div class="user">
+			<?php 
+			if (AuthComponent::user()):
+			  // The user is logged in, show the logout link
+			  echo $current_user['username'];
+			  echo '&nbsp;';
+			  echo $this->Html->link('Log out', array('controller' => 'users', 'action' => 'logout'));
+			else:
+			  // The user is not logged in, show login link
+			  if ( $this->name !== 'Users' && $this->action !== 'login' ) {
+				  echo $this->Html->link('Log in', array('controller' => 'users', 'action' => 'login'));
+			  }
+			  
+			endif;
+			
+			echo $this->Session->flash(); 
+			
+			?>
+            </div>
 			<?php echo $this->fetch('content'); ?>
 		</div>
 		<div id="footer">

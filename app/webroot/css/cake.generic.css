@@ -167,6 +167,7 @@ table tr td {
 table tr:nth-child(even) {
 	background: #f9f9f9;
 }
+th.actions,
 td.actions {
 	text-align: center;
 	white-space: nowrap;
@@ -739,4 +740,8 @@ pre {
 /** Elements **/
 #url-rewriting-warning {
 	display:none;
+}
+
+.user {
+	float: right;
 }
