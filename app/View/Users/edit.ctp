@@ -1,32 +1,37 @@
 <!-- File: /app/View/Users/edit.ctp -->
 
+<?php echo $this->Html->link('<<', array('action' => 'index'), array('class'=>'btn btn-default mb', 'id'=>'back'));?>
 
 <div class="users form">
-
 <?php echo $this->Form->create('User'); ?>
-	<fieldset>
-		<legend><?php echo('Edit User'); ?></legend>
+	<fieldset>                                                                                                                
+		<legend><?php echo('Edit User'); ?>
+    </legend>
 
 <?php
+
 echo $this->Form->input('id');
-echo $this->Form->input('name');
-echo $this->Form->input('email');
-echo $this->Form->input('username');
-echo $this->Form->input('password');
+echo '<div class="form-group">';
+echo $this->Form->input('name', array('class'=>'form-control'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->Form->input('email', array('class'=>'form-control'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->Form->input('username', array('class'=>'form-control'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->Form->input('password', array('class'=>'form-control'));
+echo '</div>';
+echo '<div class="form-group">';
 echo $this->Form->input('role', array(
-    'options' => array('admin'=>'Admin','author'=>'Author')
+    'options' => array('admin'=>'Admin','author'=>'Author'),
+    'class'=>'form-control'
     ));
+echo '</div>';
 ?>
-	</fieldset>
-<?php echo $this->Form->end('Submit');?>
+</fieldset>
+<?php echo $this->Form->submit('Update',array('class'=>'btn btn-success btn-lg pull-left'));?>
 </div>
 
 
-<div class="actions">
-	<h3><?php echo('Actions'); ?></h3>
-	
-	<ul>
-		<li><?php echo $this->Html->link('List Users', array('action' => 'index'));?></li>
-		<li><?php echo $this->Form->postLink('Delete', array('action' => 'index'));?></li>
-	</ul>
-</div>

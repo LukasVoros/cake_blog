@@ -1,8 +1,8 @@
 <!-- File: /app/View/Posts/index.ctp -->
 
 <h1>Blog posts</h1>
-<p><?php echo $this->Html->link('Add Post', array('action' => 'add')); ?></p>
-<table>
+<p><?php echo $this->Html->link('Add Post', array('action' => 'add'),  array('class' => 'btn btn-success')); ?></p>
+<table class="table table-striped table-hover">
     <tr>
 		<th><?php echo $this->Paginator->sort('id'); ?></th>
 		<th><?php echo $this->Paginator->sort('Title'); ?></th>
@@ -25,20 +25,21 @@
         </td>
         <td>
             <?php
-                echo $this->Form->postLink(
-                    'Delete',
-                    array('action' => 'delete', $post['Post']['id']),
-                    array('confirm' => 'Are you sure?')
+                echo $this->Html->link(
+                    'Edit', array('action' => 'edit', $post['Post']['id']),
+                    array('class' => 'btn btn-info btn-xs')
                 );
             ?>
             <?php
-                echo $this->Html->link(
-                    'Edit', array('action' => 'edit', $post['Post']['id'])
+                echo $this->Form->postLink(
+                    'Delete',
+                    array('action' => 'delete', $post['Post']['id']),
+                    array('confirm' => 'Are you sure?', 'class'=>'btn btn-danger btn-xs')
                 );
             ?>
         </td>
         <td>
-            <?php echo $post['Post']['created']; ?>
+            <?php echo date('d.m.Y h:i:s', strtotime($post['Post']['created'])); ?>
         </td>
     </tr>
     <?php endforeach; 
@@ -46,42 +47,3 @@
     ?>
 
 </table>
-
-
-<?php
-
-echo $this->Paginator->counter(
-    'Page {:page} of {:pages}, showing {:current} records out of
-     {:count} total, starting on record {:start}, ending on {:end}'
-);
-?>
-<?php
-	echo $this->Html->div(
-  null,
-  $this->Paginator->prev(
-    '<< Previous', 
-    array(
-      'class' => 'PrevPg'
-    ), 
-    null, 
-    array(
-      'class' => 'PrevPg DisabledPgLk'
-    )
-  ).
-  $this->Paginator->numbers().
-  $this->Paginator->next(
-    'Next >>', 
-    array(
-      'class' => 'NextPg'
-    ), 
-    null, 
-    array(
-      'class' => 'NextPg DisabledPgLk'
-    )
-  ),
-  array(
-    'style' => 'width: 100%;'
-  )
-);  
-
-?>

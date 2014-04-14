@@ -42,6 +42,7 @@ class AppController extends Controller {
     	//note I have implemented
     	//fully operational Debugger
         'Session','DebugKit.Toolbar',
+        
         //and Auth, the value as an array
         'Auth' => array(
         	//set loginRedirect option to an array
@@ -68,6 +69,11 @@ class AppController extends Controller {
 
 	//isAuthorized function using user for argument
 	public function isAuthorized($user) {
+      
+      if ( $this->name === 'Posts' ) {
+          return true;
+      }
+    
 	    // Admin can access every action
 	    if (isset($user['role']) && $user['role'] === 'admin') {
 	        return true;

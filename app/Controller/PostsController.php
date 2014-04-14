@@ -67,14 +67,18 @@ class PostsController extends AppController {
             
             //if this work set the flash and say that your post has been saved: confirmation message
                //i can type in any message when it set flash 
-                $this->Session->setFlash(__('Your post has been saved.'));
+                $this->Session->setFlash(__('Your post has been saved.'),
+            'default',
+            array('class'=>'alert alert-success'));
                 //redirect to the Posts index action//
                 //list all the post 
                return $this->redirect(array('action' => 'index'));
             }
             
             //flash message saying we weren't able to do it. // 
-            $this->Session->setFlash(__('Unable to add your post.'));
+            $this->Session->setFlash(__('Unable to add your post.'),
+            'default',
+            array('class'=>'alert alert-danger'));
         }
     } 
     
@@ -92,10 +96,15 @@ class PostsController extends AppController {
     if ($this->request->is(array('post', 'put'))) {
         $this->Post->id = $id;
         if ($this->Post->save($this->request->data)) {
-            $this->Session->setFlash(__('Your post has been updated.'));
+            $this->Session->setFlash(__('Your post has been updated.'),
+            'default',
+            array('class'=>'alert alert-success'));
             return $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash(__('Unable to update your post.'));
+        $this->Session->setFlash(__('Unable to update your post.'),
+            'default',
+            array('class'=>'alert alert-danger')
+        );
     }
 
     if (!$this->request->data) {
@@ -110,7 +119,9 @@ class PostsController extends AppController {
 
     if ($this->Post->delete($id)) {
         $this->Session->setFlash(
-            __('The post with id: %s has been deleted.', h($id))
+            __('The post with id: %s has been deleted.', h($id)),
+            'default',
+            array('class'=>'alert alert-success')
         );
         return $this->redirect(array('action' => 'index'));
     }
@@ -119,6 +130,7 @@ class PostsController extends AppController {
   // app/Controller/PostsController.php
 
 	public function isAuthorized($user) {
+
     // All registered users can add posts
     if ($this->action === 'add') {
         return true;

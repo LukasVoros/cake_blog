@@ -8,8 +8,10 @@ class UsersController extends AppController {
         //use this componennt Auth and allow()
         $this->Auth->allow('add','logout');
         //after this function allowed, go on...
+            
     }
-    
+        
+	  	    
 ///////////////////////////////////////////////////////////////////////////////////////////
 //login user
 public function login() {
@@ -19,7 +21,9 @@ public function login() {
         if ($this->Auth->login()) {
             $this->redirect( array('controller' => 'posts', 'action' => 'index') );
         } else {
-        		$this->Session->setFlash('Invalid username or password, try again');
+        		$this->Session->setFlash('Invalid username or password, try again',
+            'default',
+            array('class'=>'alert alert-danger'));
   		  }
   		}
 	}
@@ -31,6 +35,7 @@ public function logout() {
   }
 ///////////////////////////////////////////////////////////////////////////////////////////
     public function index() {
+        $this->isAuthorized();
     //the model that relates to this user
     //=0, look at the name of the table
         $this->User->recursive = 0;
@@ -40,6 +45,7 @@ public function logout() {
     }
 
     public function view($id = null) {
+        $this->isAuthorized();
     	//find the users id
         $this->User->id = $id;
         //
@@ -50,33 +56,43 @@ public function logout() {
     }
 
     public function add() {
+        $this->isAuthorized();
     	//http post request using form
         if ($this->request->is('post')) {
             $this->User->create();
             //the request object
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('The user has been saved'),
+            'default',
+            array('class'=>'alert alert-success'));
                 //redirect to index
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'login','controller'=>'Users'));
             }//call session helper that will show the message
             $this->Session->setFlash(
-                __('The user could not be saved. Please, try again.')
+                __('The user could not be saved. Please, try again.'),
+            'default',
+            array('class'=>'alert alert-danger')
             );
         }
     }
     
     public function edit($id = null) {
+        $this->isAuthorized();
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been updated'));
+                $this->Session->setFlash(__('The user has been updated'),
+            'default',
+            array('class'=>'alert alert-success'));
                 return $this->redirect(array('action' => 'index'));
             }
             $this->Session->setFlash(
-                __('The user could not be saved. Please, try again.')
+                __('The user could not be saved. Please, try again.',
+            'default',
+            array('class'=>'alert alert-danger'))
             );
         } else {
         //if its a get request
@@ -87,6 +103,7 @@ public function logout() {
     }
 
     public function delete($id = null) {
+        $this->isAuthorized();
         $this->request->onlyAllow('post');
 
         $this->User->id = $id;
@@ -94,11 +111,28 @@ public function logout() {
             throw new NotFoundException(__('Invalid user'));
         }
         if ($this->User->delete()) {
-            $this->Session->setFlash(__('User deleted'));
+            $this->Session->setFlash(__('User deleted'),
+            'default',
+            array('class'=>'alert alert-success'));
             return $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash(__('User was not deleted'));
+        $this->Session->setFlash(__('User was not deleted'),
+            'default',
+            array('class'=>'alert alert-danger'));
         return $this->redirect(array('action' => 'index'));
     }
+
+
+	public function isAuthorized( $user = null ) {
+        $u = $this->Auth->user();
+        if ( $u['role'] !== 'admin' ) {
+        		$this->Session->setFlash('You don\'t have permittions for requested action.',
+            'default',
+            array('class'=>'alert alert-danger'));
+            $this->redirect( array('controller' => 'posts', 'action' => 'index') );
+        }
+        return true;
+	}
+
 }
 ?>

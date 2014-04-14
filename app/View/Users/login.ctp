@@ -5,9 +5,12 @@
         <legend>
             <?php echo __('Please enter your username and password'); ?>
         </legend>
-        	<?php echo $this->Form->input('username');
-        		  echo $this->Form->input('password');
-    ?>
+<div class="form-group">
+        	<?php echo $this->Form->input('username', array('class'=>'form-control')); ?>
+</div>
+<div class="form-group">
+        		  <?php echo $this->Form->input('password', array('class'=>'form-control'));     ?>
+</div>
     </fieldset>
-<?php echo $this->Form->end(__('Login')); ?>
+<?php echo $this->Form->submit(__('Login'), array('class'=>'btn btn-success')); ?>
 </div>

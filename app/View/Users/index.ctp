@@ -1,6 +1,7 @@
 <div class="users index">
 	<h2>Users</h2>
-	<table cellpadding="0" cellspacing="0">
+	<?php echo $this->Html->link('New User', array('action' => 'add'), array( 'class' => 'btn btn-success mb') ); ?></li>
+	<table cellpadding="0" cellspacing="0" class="table table-striped table-hover">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
 			<th>name</th>
@@ -24,25 +25,24 @@
 		
 		<td class="actions">
 			<?php echo $this->Html->link('View', array(
-				'action' => 'view', $posts['User']['id'])); 
+				'action' => 'view', $posts['User']['id']),
+        array('class' => 'btn btn-info btn-xs')
+        ); 
 				?>
 				
 			<?php echo $this->Html->link('Edit', array(
-				'action' => 'edit', $posts['User']['id'])); 
+				'action' => 'edit', $posts['User']['id']),
+        array('class' => 'btn btn-success btn-xs')
+        
+           ); 
 				?>
 				
 			<?php echo $this->Form->postLink('Delete', array(
 			'action' => 'delete', $posts['User']['id']), array(
-			'confirm'=>'Are you sure you want to delete that user?')); ?>
+			'confirm'=>'Are you sure you want to delete that user?', 'class' => 'btn btn-danger btn-xs')); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
 	</table>
-</div>
-<div class="actions">
-	<h3>Actions</h3>
-	<ul>
-		<li><?php echo $this->Html->link('New User', array('action' => 'add')); ?></li>
-	</ul>
 </div>
  <h2>

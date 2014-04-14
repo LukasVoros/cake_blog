@@ -1,0 +1,21 @@
+.user {
+  padding: 1em;
+}
+
+.mt {
+  margin-top: 1em;
+}
+
+.mb {
+  margin-bottom: 1em;
+}
+
+#back {
+  position: absolute;
+  top: 8px;
+}
+
+.error-message {
+  color: red;
+  padding: 10px 0;
+}
