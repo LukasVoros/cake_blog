@@ -6,6 +6,6 @@
 echo $this->Form->create('Post', array ('action'=>'add'));
 echo $this->Form->input('title', array('class'=>'form-control'));
 echo $this->Form->input('body', array('rows' => '3', 'class'=>'form-control'));
-echo $this->Form->input('id', array('type' => 'hidden', 'class'=>'form-control'));
+echo $this->Form->input('id', array('type' => 'hidden'));
 echo $this->Form->submit('Add Post', array('class'=>'btn btn-primary mt'));
 ?>

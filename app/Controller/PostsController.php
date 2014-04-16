@@ -69,6 +69,7 @@ class PostsController extends AppController {
                //i can type in any message when it set flash 
                 $this->Session->setFlash(__('Your post has been saved.'),
             'default',
+            //confirmation message pops up
             array('class'=>'alert alert-success'));
                 //redirect to the Posts index action//
                 //list all the post 
@@ -78,6 +79,7 @@ class PostsController extends AppController {
             //flash message saying we weren't able to do it. // 
             $this->Session->setFlash(__('Unable to add your post.'),
             'default',
+            //confirmation message pops up
             array('class'=>'alert alert-danger'));
         }
     } 
@@ -98,11 +100,13 @@ class PostsController extends AppController {
         if ($this->Post->save($this->request->data)) {
             $this->Session->setFlash(__('Your post has been updated.'),
             'default',
+            //confirmation message pops up
             array('class'=>'alert alert-success'));
             return $this->redirect(array('action' => 'index'));
         }
         $this->Session->setFlash(__('Unable to update your post.'),
             'default',
+            //confirmation message pops up
             array('class'=>'alert alert-danger')
         );
     }
@@ -121,6 +125,7 @@ class PostsController extends AppController {
         $this->Session->setFlash(
             __('The post with id: %s has been deleted.', h($id)),
             'default',
+            //confirmation message pops up
             array('class'=>'alert alert-success')
         );
         return $this->redirect(array('action' => 'index'));

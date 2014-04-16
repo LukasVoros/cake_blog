@@ -6,9 +6,7 @@
 	<title>myBlog</title>
 	<?php
 		echo $this->Html->meta('icon');
-		// used bootstrap for css layout
 		echo $this->Html->css('bootstrap.min');
-		// my new css file called tech
 		echo $this->Html->css('myBlog');
 
 		echo $this->fetch('meta');
@@ -21,6 +19,7 @@
 		<div id="header">
 		</div>
 		<div id="content" class="container ">
+
 			<div class="user panel text-right">
 			<?php 
 			if (AuthComponent::user()):
